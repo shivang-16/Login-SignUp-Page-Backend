@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
+import bcrypt from "bcrypt"
 const app = express();
 const port =  5000;
 
@@ -59,12 +60,12 @@ app.post("/signup",async (req, res)=>{
     if(User){
         return res.render("signup",{message:"Email already exist! Please Login"})
     }
-    
+    const hashPassword = await bcrypt.hash(password, 10)
     User = await user.create({
         name,
         phone,
         email,
-        password,
+        password: hashPassword,
     });
     const token =jwt.sign({_id: User._id}, "khfjhsdfifhweihi")
     res.cookie('token', token)
@@ -80,7 +81,7 @@ app.post('/login',async(req,res)=>{
     if (!User) {
         return res.render("signup", {message: "Email not found! Register first"} );
     }
-    const isMatch = User.password===password
+    const isMatch = await bcrypt.compare(password, User.password)
     if(!isMatch) return res.render("login",{email, message: "Incorrect Password! Try again"})
 
     const token =jwt.sign({_id: User._id}, "khfjhsdfifhweihi")
