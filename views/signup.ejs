@@ -50,10 +50,10 @@ button{
     <form action="/signup" method="post">       
      <h1>SignUp</h1> 
      <p class="error"><%= locals.message %></p> 
-       <input type="text" name="name" placeholder="Name">
-      <input type="number" name="phone" placeholder="Phone">
-      <input type="email" name="email" placeholder="Email">
-      <input type="password" name="password" placeholder="Set Password">
+       <input type="text" name="name" placeholder="Name" required>
+      <input type="number" name="phone" placeholder="Phone" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="password" name="password" placeholder="Set Password" required>
      <button type="submit">SignUp</button>
      
         <p>Already have account?</p>
