@@ -38,14 +38,18 @@ button{
     color: white;
     border-radius: 10px;
 }
+.error{
+    color: red;
+}
   </style>
 </head>
 <body>
     <main>
     <form action="/login" method="post">
      <h1>Login</h1>
-        <input type="email" name="email" placeholder="Email">
+        <input type="email" name="email" placeholder="Email" value="<%= locals.email%>">
         <input type="password" name="password" placeholder="Password">
+        <p class="error"><%= locals.message%></p>
      <button type="submit">Login</button>
     </main>
     </body>

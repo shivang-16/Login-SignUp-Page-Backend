@@ -70,14 +70,28 @@ app.post("/signup",async (req, res)=>{
     res.cookie('token', token)
     res.redirect('/')
 })
-app.get("/login",(req, res)=>{
+app.get("/login", (req, res)=>{
     res.render("login")
+
+})
+app.post('/login',async(req,res)=>{
+    const {email, password} = req.body;
+    let User = await user.findOne({email});
+    if (!User) {
+        return res.render("signup", {message: "Email not found! Register first"} );
+    }
+    const isMatch = User.password===password
+    if(!isMatch) return res.render("login",{email, message: "Incorrect Password! Try again"})
+
+    const token =jwt.sign({_id: User._id}, "khfjhsdfifhweihi")
+    res.cookie('token', token)
+    res.redirect('/')
 })
 app.get('/logout',(req, res)=>{
     res.cookie('token', null, {
         expires: new Date(Date.now()),
     })
-    res.redirect('/')
+    res.redirect('/login')
 })
 app.listen(port, ()=>{
     console.log(`Server is running at ${port}`)
